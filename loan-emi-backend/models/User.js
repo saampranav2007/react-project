@@ -4,6 +4,11 @@ import bcrypt from 'bcryptjs';
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  
+  // ADDED: These must perfectly match what React is sending!
+  phone: { type: String, required: true, unique: true },
+  panCard: { type: String, required: true, unique: true, uppercase: true },
+  
   password: { type: String, required: true },
   cibilScore: { 
     type: Number, 

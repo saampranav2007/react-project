@@ -7,13 +7,15 @@ const generateToken = (id) => {
 };
 
 export const registerUser = async (req, res) => {
-  const { name, email, password, monthlyIncome } = req.body;
+  // 🛡️ THE FIX: Extract phone and panCard from the React payload!
+  const { name, email, password, monthlyIncome, phone, panCard } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-    const user = await User.create({ name, email, password, monthlyIncome });
+    // 🛡️ THE FIX: Pass phone and panCard into the database creation method!
+    const user = await User.create({ name, email, password, monthlyIncome, phone, panCard });
 
     res.status(201).json({
       _id: user._id,
@@ -23,6 +25,7 @@ export const registerUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (error) {
+    // If MongoDB throws an error (like a duplicate PAN), this sends it back to React!
     res.status(500).json({ message: error.message });
   }
 };

@@ -1,40 +1,36 @@
+import React from 'react';
+
 export default function SliderInput({ label, value, min, max, step, onChange, symbol = '', suffix = '' }) {
-  // Calculate percentage for slider track coloring
-  const percentage = ((value - min) / (max - min)) * 100;
+  // Helper to format Indian currency for the display bubble
+  const formattedValue = Number(value).toLocaleString('en-IN');
+  const formattedMin = Number(min).toLocaleString('en-IN');
+  const formattedMax = Number(max).toLocaleString('en-IN');
 
   return (
-    <div className="mb-6">
-      <div className="flex justify-between items-center mb-4">
-        <label className="text-sm font-semibold text-gray-700">{label}</label>
-        <div className="flex items-center bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
-          <span className="text-blue-600 font-medium mr-1">{symbol}</span>
-          <input
-            type="number"
-            value={value}
-            onChange={(e) => onChange(Number(e.target.value))}
-            className="w-24 bg-transparent outline-none text-right font-bold text-slate-800"
-            min={min}
-            max={max}
-          />
-          <span className="text-gray-500 text-sm ml-1">{suffix}</span>
+    <div className="w-full relative group">
+      {/* Label and Dynamic Value Display */}
+      <div className="flex justify-between items-end mb-3">
+        <label className="text-sm font-bold text-slate-700">{label}</label>
+        <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200 font-extrabold text-blue-700 shadow-sm transition-colors group-hover:border-blue-300">
+          {symbol}{formattedValue}{suffix}
         </div>
       </div>
       
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
+      {/* The Custom Slider */}
+      <input 
+        type="range" 
+        min={min} 
+        max={max} 
+        step={step} 
+        value={value} 
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-2 rounded-lg appearance-none cursor-pointer"
-        style={{
-          background: `linear-gradient(to right, #3b82f6 ${percentage}%, #e2e8f0 ${percentage}%)`
-        }}
+        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-shadow"
       />
-      <div className="flex justify-between text-xs text-gray-400 mt-2 font-medium">
-        <span>{symbol}{min.toLocaleString()} {suffix}</span>
-        <span>{symbol}{max.toLocaleString()} {suffix}</span>
+      
+      {/* Min/Max Helper Text */}
+      <div className="flex justify-between text-xs font-semibold text-slate-400 mt-2">
+        <span>{symbol}{formattedMin}{suffix}</span>
+        <span>{symbol}{formattedMax}{suffix}</span>
       </div>
     </div>
   );

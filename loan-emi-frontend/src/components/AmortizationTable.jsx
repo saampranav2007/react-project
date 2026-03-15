@@ -1,35 +1,41 @@
+import React from 'react';
+
 export default function AmortizationTable({ schedule }) {
-  if (!schedule || schedule.length === 0) return null;
+  if (!schedule || schedule.length === 0) {
+    return <div className="p-6 text-center text-slate-400">No schedule generated yet.</div>;
+  }
 
   return (
-    <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
-        <h3 className="text-lg font-semibold text-gray-800">Amortization Schedule</h3>
-      </div>
-      <div className="max-h-96 overflow-y-auto">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-white sticky top-0 shadow-sm">
-            <tr>
-              <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase">Month</th>
-              <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase">EMI (₹)</th>
-              <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase">Principal (₹)</th>
-              <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase">Interest (₹)</th>
-              <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase">Balance (₹)</th>
+    // The overflow-x-auto is the magic class for mobile!
+    <div className="w-full overflow-x-auto custom-scrollbar">
+      <table className="w-full text-left border-collapse min-w-[500px]">
+        <thead className="sticky top-0 z-10 bg-slate-50 shadow-sm">
+          <tr className="text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+            <th className="p-4 font-bold">Month</th>
+            <th className="p-4 font-bold text-slate-600">Principal Paid</th>
+            <th className="p-4 font-bold text-orange-500">Interest Paid</th>
+            <th className="p-4 font-bold text-blue-700">Closing Balance</th>
+          </tr>
+        </thead>
+        <tbody className="text-sm bg-white">
+          {schedule.map((row, index) => (
+            <tr key={index} className="border-b border-slate-100 hover:bg-blue-50/50 transition-colors">
+              <td className="p-4 font-bold text-slate-700">
+                {row.month}
+              </td>
+              <td className="p-4 text-slate-600 font-medium">
+                ₹{Math.round(row.principalPayment).toLocaleString('en-IN')}
+              </td>
+              <td className="p-4 text-orange-500 font-medium">
+                ₹{Math.round(row.interestPayment).toLocaleString('en-IN')}
+              </td>
+              <td className="p-4 text-slate-900 font-bold">
+                ₹{Math.round(row.remainingBalance).toLocaleString('en-IN')}
+              </td>
             </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 bg-white">
-            {schedule.map((row) => (
-              <tr key={row.month} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-3 text-gray-900 font-medium">{row.month}</td>
-                <td className="px-6 py-3 text-gray-600">{row.emi.toLocaleString()}</td>
-                <td className="px-6 py-3 text-green-600">{row.principalPayment.toLocaleString()}</td>
-                <td className="px-6 py-3 text-orange-500">{row.interestPayment.toLocaleString()}</td>
-                <td className="px-6 py-3 text-blue-600 font-medium">{row.remainingBalance.toLocaleString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
