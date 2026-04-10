@@ -14,12 +14,11 @@ const app = express();
 app.use(cors({
     origin: [
         "http://localhost:5173", 
-        "https://react-project-kf6u.onrender.com" 
+        "https://loanemi.vercel.app" // 
     ],
     credentials: true, 
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
-// ==========================================
 
 app.use(express.json());
 
