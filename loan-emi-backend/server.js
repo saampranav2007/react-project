@@ -10,7 +10,17 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+
+app.use(cors({
+    origin: [
+        "http://localhost:5173", 
+        "https://react-project-kf6u.onrender.com" 
+    ],
+    credentials: true, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
+// ==========================================
+
 app.use(express.json());
 
 // Mount Routes
